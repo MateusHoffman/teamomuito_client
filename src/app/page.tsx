@@ -1,4 +1,5 @@
 "use client";
+// import dotenv from "dotenv";
 import React, { useEffect, useState } from "react";
 import FormInput from "./components/formInput/FormInput";
 import PhotoUploader from "./components/photoUploader/PhotoUploader";
@@ -8,7 +9,10 @@ import Photo2 from "@/app/assets/images/photo2.png";
 import Photo3 from "@/app/assets/images/photo3.png";
 import Photo4 from "@/app/assets/images/photo4.png";
 import { StaticImageData } from "next/image";
-import { validateField } from "./utils/helpers";
+import { resizeAndConvertImages, validateField } from "./utils/helpers";
+import "@/app/assets/styles/scrollbar.css";
+
+// dotenv.config();
 
 export interface FormData {
   manName: string;
@@ -21,12 +25,23 @@ export interface FormData {
 }
 
 const Home: React.FC = () => {
-  const [manName, setManName] = useState<string>("");
-  const [womanName, setWomanName] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [startTime, setStartTime] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [youtubeLink, setYoutubeLink] = useState<string>("");
+  const [manName, setManName] = useState<string>("Mateus");
+  const [womanName, setWomanName] = useState<string>("Júlia");
+  const [startDate, setStartDate] = useState<string>("2022-01-01");
+  const [startTime, setStartTime] = useState<string>("00:00");
+  const [message, setMessage] =
+    useState<string>(`Só queria te dizer que você é tudo pra mim.
+  Desde que a gente se conheceu, minha vida ficou muito mais divertida.
+  
+  Seu sorriso? É a melhor parte do meu dia!
+  Quero passar cada momento com você, vivendo nossas loucuras e risadas.
+  
+  Te amo demais, de um jeito que nem consigo explicar.
+  
+  Beijinhos`);
+  const [youtubeLink, setYoutubeLink] = useState<string>(
+    "https://www.youtube.com/watch?v=oFbSL5RTrac&ab_channel=Jorge%26Mateus-Topic"
+  );
   const [photos, setPhotos] = useState<File[]>([]);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [example, setExample] = useState<boolean>(true);
@@ -99,17 +114,22 @@ const Home: React.FC = () => {
     if (missingFields) {
       alert(missingFields);
     } else {
-      const content = formData
-      console.log('content: ', content);
-      // const response = await fetch('https://server.fly.dev/api/checkout', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name, email }),
-      // });
-      // const data = await response.json();
-      // if (data.url) {
-      //   window.location.href = data.url;
-      // }
+      if (formData && Array.isArray(formData.photos) && formData.photos.every(file => file instanceof File)) {
+        const photosBase64 = await resizeAndConvertImages(formData?.photos);
+        const content = {...formData, photos: photosBase64};
+        console.log("content: ", content);
+        const api = process.env.NEXT_PUBLIC_BASE_URL;
+        const path = "/checkout";
+        const response = await fetch(api + path, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(content),
+        });
+        const data = await response.json();
+        if (data.url) {
+          window.location.href = data.url;
+        }
+      }
     }
   };
 

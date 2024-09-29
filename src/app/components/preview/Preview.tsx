@@ -1,5 +1,5 @@
 "use client";
-import '@/app/assets/styles/scrollbar.css';
+import "@/app/assets/styles/scrollbar.css";
 import { FormData } from "@/app/page";
 import {
   calculateTimeDifference,
@@ -12,9 +12,14 @@ import ReactPlayer from "react-player";
 interface PreviewProps {
   formData: FormData | null;
   example: boolean;
+  showPresent?: boolean;
 }
 
-const Preview: React.FC<PreviewProps> = ({ formData, example }) => {
+const Preview: React.FC<PreviewProps> = ({
+  formData,
+  example,
+  showPresent,
+}) => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [timeDifference, setTimeDifference] = useState<TimeDifference>({
     years: 0,
@@ -91,7 +96,15 @@ const Preview: React.FC<PreviewProps> = ({ formData, example }) => {
 
   return (
     // <div className="bg-[#202020] min-h-[85vh] max-h-[85vh] max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto">
-    <div className="bg-[#202020] min-h-[95vh] max-h-[95vh] lg:min-h-[85vh] lg:max-h-[85vh] max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto">
+    <div
+      className={`bg-[#202020] 
+        ${
+          showPresent
+            ? "min-h-[95vh] max-h-[95vh]"
+            : "lg:min-h-[85vh] lg:max-h-[85vh]"
+        } 
+        max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto`}
+    >
       <div className="w-full px-2 py-1 mb-5 bg-white rounded-md">
         {formData?.manName && formData?.womanName ? (
           <span className="flex justify-center text-center">{`teamomuito.com.br/${formData.manName}-e-${formData.womanName}`}</span>

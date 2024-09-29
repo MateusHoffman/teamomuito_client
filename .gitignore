@@ -55,6 +55,7 @@ Thumbs.db
 out/
 
 # Local development environment files
+.env
 .env.local
 .env.development.local
 .env.test.local
