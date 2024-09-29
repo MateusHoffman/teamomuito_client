@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "date-fns": "^4.1.0",
+    "html2canvas": "^1.4.1",
     "next": "14.2.12",
     "qrcode.react": "^4.0.1",
     "react": "^18",

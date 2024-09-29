@@ -3,12 +3,13 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react"; // Importa o QRCode
 import LogoTeAmoMuito from "@/app/assets/images/logo-te-amo-muito.png";
+import html2canvas from "html2canvas"; // Importa html2canvas
 
-export default function page({ params }: { params: { slug: string } }) {
+export default function Page({ params }: { params: { slug: string } }) {
   const [buttonText, setButtonText] = useState(
     "Clique aqui para copiar o link"
   );
-  const qrCodeRef = useRef<SVGSVGElement>(null); // Ref para o QR Code
+  const qrCodeRef = useRef<HTMLDivElement>(null); // Ref para o contêiner do QR Code
 
   // Função para copiar o link para a área de transferência
   function handleCopy() {
@@ -36,36 +37,35 @@ export default function page({ params }: { params: { slug: string } }) {
     window.open(link, "_blank");
   }
 
-  // Função para baixar a imagem do QR Code
-  function handleDownloadQRCode() {
-    const svgElement = qrCodeRef.current;
+  // Função para baixar a imagem do QR Code como PNG
+  async function handleDownloadQRCode() {
+    const element = qrCodeRef.current;
 
-    if (svgElement) {
-      const svgData = new Blob([svgElement.outerHTML], {
-        type: "image/svg+xml;charset=utf-8",
-      });
-      const url = URL.createObjectURL(svgData);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `QRCode_${params.slug}.svg`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+    if (element) {
+      const canvas = await html2canvas(element);
+      const dataURL = canvas.toDataURL("image/png");
+
+      // Criar um link para download
+      const link = document.createElement("a");
+      link.href = dataURL;
+      link.download = `QRCode_${params.slug}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 
   return (
     <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen">
-      <div className="lg:w-[30vw] flex justify-start items-center flex-col h-screen bg-[#030d21]">
-        <div className="relative w-full h-[25vh]">
+      <div className="lg:w-[25vw] flex justify-start items-center flex-col h-screen bg-[#030d21]">
+        <div className="relative w-[70vw] h-[20vh]">
           <Image
             src={LogoTeAmoMuito}
             alt="Logo Te Amo Muito"
             fill
             className="rounded-lg"
             style={{ objectFit: "contain" }}
-            priority // Add this prop
+            priority
           />
         </div>
         <span className="block pt-4 mb-2 text-base font-bold tracking-wide text-center text-white uppercase">
@@ -74,9 +74,11 @@ export default function page({ params }: { params: { slug: string } }) {
         <span className="block mb-2 text-xs font-bold tracking-wide text-center text-white uppercase">
           Atenção: Se perder, não será possível recuperá-los.
         </span>
-        <div className="bg-white rounded-xl w-[70vw] lg:w-[17vw] lg:h-[17vw] h-[70vw] mt-7 p-2 flex items-center justify-center">
+        <div
+          ref={qrCodeRef} // Usando ref aqui para capturar o QR Code
+          className="bg-white rounded-xl w-[70vw] lg:w-[17vw] lg:h-[17vw] h-[70vw] mt-7 p-2 flex items-center justify-center"
+        >
           <QRCodeSVG
-            ref={qrCodeRef} // Adiciona a ref ao QRCodeSVG
             value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${params?.slug}`}
             size={256}
           />
