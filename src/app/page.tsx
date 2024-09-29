@@ -213,12 +213,28 @@ const Home: React.FC = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
           <PhotoUploader onPhotoChange={handlePhotoChange} />
-          <button
+          {/* <button
             type="button" // Altere para "button"
             onClick={handleSubmit}
             className="hidden py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:block"
           >
             Criar meu site
+          </button> */}
+          <button
+            type="submit"
+            className="items-center justify-center hidden gap-2 py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:flex"
+            onClick={handleSubmit}
+            disabled={isLoading} // Desativa o botão enquanto estiver carregando
+          >
+            {isLoading ? (
+              <>
+                {/* Spinner melhorado com Tailwind */}
+                Criando site... 
+                <div className="w-6 h-6 border-4 border-t-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
+              </>
+            ) : (
+              "Criar meu site"
+            )}
           </button>
         </form>
       </div>
@@ -230,7 +246,7 @@ const Home: React.FC = () => {
           <Preview formData={formData} example={example} />
           <button
             type="submit"
-            className="flex items-center justify-center block gap-2 py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:hidden"
+            className="flex items-center justify-center gap-2 py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:hidden"
             onClick={handleSubmit}
             disabled={isLoading} // Desativa o botão enquanto estiver carregando
           >

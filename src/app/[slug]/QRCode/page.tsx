@@ -56,55 +56,57 @@ export default function page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="flex justify-start items-center flex-col h-screen bg-[#030d21] px-4 max-w-screen w-screen">
-      <div className="relative w-[80vw] h-[25vh]">
-        <Image
-          src={LogoTeAmoMuito}
-          alt="Logo Te Amo Muito"
-          fill
-          className="rounded-lg"
-          style={{ objectFit: "contain" }}
-          priority // Add this prop
-        />
+    <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen">
+      <div className="lg:w-[30vw] flex justify-start items-center flex-col h-screen bg-[#030d21]">
+        <div className="relative w-full h-[25vh]">
+          <Image
+            src={LogoTeAmoMuito}
+            alt="Logo Te Amo Muito"
+            fill
+            className="rounded-lg"
+            style={{ objectFit: "contain" }}
+            priority // Add this prop
+          />
+        </div>
+        <span className="block pt-4 mb-2 text-base font-bold tracking-wide text-center text-white uppercase">
+          Guarde o link e o QR Code do seu site com cuidado.
+        </span>
+        <span className="block mb-2 text-xs font-bold tracking-wide text-center text-white uppercase">
+          Atenção: Se perder, não será possível recuperá-los.
+        </span>
+        <div className="bg-white rounded-xl w-[70vw] lg:w-[17vw] lg:h-[17vw] h-[70vw] mt-7 p-2 flex items-center justify-center">
+          <QRCodeSVG
+            ref={qrCodeRef} // Adiciona a ref ao QRCodeSVG
+            value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${params?.slug}`}
+            size={256}
+          />
+        </div>
+        <button
+          onClick={handleDownloadQRCode}
+          className="bg-white rounded-lg w-[70vw] lg:w-[17vw] h-8 mt-7 p-2 flex items-center justify-center"
+        >
+          <span className="text-xs font-bold tracking-wide text-center uppercase">
+            Baixar QR Code
+          </span>
+        </button>
+        <button
+          onClick={handleCopy}
+          className="bg-white rounded-lg w-[70vw] lg:w-[17vw] h-8 mt-2 p-2 flex items-center justify-center"
+        >
+          <span className="text-xs font-bold tracking-wide text-center uppercase">
+            {buttonText}
+          </span>
+        </button>
+        <div className="flex-1" />
+        <button
+          onClick={handleRedirectSite}
+          className="bg-white rounded-lg w-[70vw] lg:w-[17vw] h-14 mt-7 p-2 flex items-center justify-center mb-7"
+        >
+          <span className="font-bold tracking-wide text-center uppercase">
+            Acessar meu site
+          </span>
+        </button>
       </div>
-      <span className="block mb-2 text-base font-bold tracking-wide text-center text-white uppercase">
-        Guarde o link e o QR Code do seu site com cuidado.
-      </span>
-      <span className="block mb-2 text-xs font-bold tracking-wide text-center text-white uppercase">
-        Atenção: Se perder, não será possível recuperá-los.
-      </span>
-      <div className="bg-white rounded-xl w-[70vw] h-[70vw] mt-7 p-2 flex items-center justify-center">
-        <QRCodeSVG
-          ref={qrCodeRef} // Adiciona a ref ao QRCodeSVG
-          value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${params?.slug}`}
-          size={256}
-        />
-      </div>
-      <button
-        onClick={handleDownloadQRCode}
-        className="bg-white rounded-lg w-[70vw] h-8 mt-7 p-2 flex items-center justify-center"
-      >
-        <span className="text-xs font-bold tracking-wide text-center uppercase">
-          Baixar QR Code
-        </span>
-      </button>
-      <button
-        onClick={handleCopy}
-        className="bg-white rounded-lg w-[70vw] h-8 mt-2 p-2 flex items-center justify-center"
-      >
-        <span className="text-xs font-bold tracking-wide text-center uppercase">
-          {buttonText}
-        </span>
-      </button>
-      <div className="flex-1" />
-      <button
-        onClick={handleRedirectSite}
-        className="bg-white rounded-lg w-[70vw] h-14 mt-7 p-2 flex items-center justify-center mb-7"
-      >
-        <span className="font-bold tracking-wide text-center uppercase">
-          Acessar meu site
-        </span>
-      </button>
     </div>
   );
 }

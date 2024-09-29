@@ -39,13 +39,25 @@ const Result = ({ params }: { params: { slug: string } }) => {
   if (openPresent === false) {
     return (
       <div className="flex flex-col justify-center items-center h-screen bg-[#030d21] px-4 max-w-screen w-screen">
-        <Image
+        {/* <Image
           src={LogoTeAmoMuito}
           alt="Logo Te Amo Muito"
           objectFit="contain"
-          className="absolute top-9 py-8 w-[90vw]"
-        />
-        <button onClick={() => setOpenPresent(true)} className="p-4 border-2 border-[#DD443A] rounded-lg mt-4">
+          className="absolute top-9 py-8 w-[90vw] lg:w[30vw]"
+        /> */}
+        <div className="w-[90vw] lg:w-[20vw] h-[25vh] absolute top-9">
+          <Image
+            src={LogoTeAmoMuito}
+            alt="Logo Te Amo Muito"
+            fill
+            style={{ objectFit: "contain" }}
+            priority // Add this prop
+          />
+        </div>
+        <button
+          onClick={() => setOpenPresent(true)}
+          className="p-4 border-2 border-[#DD443A] rounded-lg mt-4"
+        >
           <span className="font-bold tracking-wide text-center text-white uppercase">
             ❤️ Abrir meu presente ❤️
           </span>

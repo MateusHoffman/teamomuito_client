@@ -188,7 +188,7 @@ const Preview: React.FC<PreviewProps> = ({
             loop
             controls
             width="100%"
-            volume={example ? 0.3 : 1}
+            volume={example ? 0.3 : 0.5}
             config={{
               youtube: {
                 playerVars: { showinfo: 1 },
