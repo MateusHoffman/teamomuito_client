@@ -150,6 +150,18 @@ Beijinhos`,
     }
   };
 
+  const validateAndFilterInput = (input: string): string => {
+    // Usar expressão regular para permitir apenas letras (a-z, A-Z)
+    const filteredInput = input.replace(/[^a-zA-ZÀ-ÿ]/g, ""); // Regex que permite apenas letras acentuadas
+
+    // Verificar se o input filtrado é diferente do original
+    if (filteredInput !== input) {
+      alert("Você só pode digitar letras, sem espaços.");
+    }
+
+    return filteredInput;
+  };
+
   useEffect(() => {
     (async () => {
       const defaultData = await generateData();
@@ -184,14 +196,18 @@ Beijinhos`,
               type="text"
               placeholder="João"
               value={manName}
-              onChange={(e) => setManName(e.target.value)}
+              onChange={(e) =>
+                setManName(validateAndFilterInput(e.target.value))
+              }
             />
             <FormInput
               label="Primeiro nome dela"
               type="text"
               placeholder="Maria"
               value={womanName}
-              onChange={(e) => setWomanName(e.target.value)}
+              onChange={(e) =>
+                setWomanName(validateAndFilterInput(e.target.value))
+              }
             />
           </div>
           <div className="flex flex-row w-full gap-4">
