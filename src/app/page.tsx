@@ -151,6 +151,13 @@ Beijinhos`,
   };
 
   useEffect(() => {
+    (async () => {
+      const defaultData = await generateData();
+      setFormData(defaultData);
+    })();
+  }, [manName, womanName, startDate, startTime, message, youtubeLink, photos]);
+
+  useEffect(() => {
     const initializeData = async () => {
       try {
         const defaultData = await generateData();
