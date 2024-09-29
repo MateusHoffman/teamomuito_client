@@ -5,16 +5,19 @@ export const metadata: Metadata = {
   title: "Te Amo Muito",
 };
 
+// Definindo a interface com a propriedade 'types' como obrigatória
+interface RootLayoutProps {
+  children: React.ReactNode;
+  types: string; // Propriedade obrigatória
+}
+
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  types, // Agora esta propriedade é obrigatória
+}: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
