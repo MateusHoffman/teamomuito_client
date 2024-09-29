@@ -49,7 +49,7 @@ const Home: React.FC = () => {
 
       if (isEmpty) {
         return {
-          manName: "João",
+          manName: "Joao",
           womanName: "Maria",
           startDate: "2022-01-01",
           startTime: "00:00",
@@ -150,17 +150,21 @@ Beijinhos`,
     }
   };
 
-  const validateAndFilterInput = (input: string): string => {
-    // Usar expressão regular para permitir apenas letras (a-z, A-Z), acentos e sem espaços
-    const filteredInput = input.normalize("NFD").replace(/[^a-zA-ZÀ-ÿ]/g, ""); // Normaliza acentos e remove qualquer caractere fora do padrão
+  const validateAndFilterInput = (input: string, prev: string): string => {
+    // Usar expressão regular para permitir apenas letras (a-z, A-Z), sem espaços, acentos, "ç", caracteres especiais ou emojis
+    const filteredInput = input.replace(/[^a-zA-Z]/g, ""); // Permite apenas letras normais
 
-    // Verificar se o input filtrado é diferente do original sem contar caracteres invisíveis
-    if (filteredInput.trim() !== input.trim()) {
-      alert("Você só pode digitar letras, sem espaços.");
+    // Verificar se o input filtrado é diferente do original
+    if (filteredInput !== input) {
+      alert(
+        "Você só pode digitar letras (A-Z), sem acentos, números, emojis ou espaços."
+      );
+      return prev
     }
 
     return filteredInput;
   };
+
   useEffect(() => {
     (async () => {
       const defaultData = await generateData();
@@ -193,10 +197,10 @@ Beijinhos`,
             <FormInput
               label="Primeiro nome dele"
               type="text"
-              placeholder="João"
+              placeholder="Joao"
               value={manName}
               onChange={(e) =>
-                setManName(validateAndFilterInput(e.target.value))
+                setManName(validateAndFilterInput(e.target.value, manName))
               }
             />
             <FormInput
@@ -205,7 +209,7 @@ Beijinhos`,
               placeholder="Maria"
               value={womanName}
               onChange={(e) =>
-                setWomanName(validateAndFilterInput(e.target.value))
+                setWomanName(validateAndFilterInput(e.target.value, womanName))
               }
             />
           </div>
