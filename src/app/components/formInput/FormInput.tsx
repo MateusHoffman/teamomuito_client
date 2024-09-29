@@ -1,4 +1,3 @@
-// FormInput.tsx
 import React, { useRef, useEffect } from "react";
 
 interface FormInputProps {
@@ -39,7 +38,7 @@ const FormInput: React.FC<FormInputProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="block w-full px-4 py-3 leading-tight text-black bg-gray-200 border border-gray-200 rounded appearance-none"
+          className="block w-full px-4 py-3 leading-tight text-black bg-gray-200 border border-gray-200 rounded appearance-none placeholder:text-gray-500" // Aqui adicionamos a classe do placeholder
         />
       ) : (
         <input
@@ -47,7 +46,7 @@ const FormInput: React.FC<FormInputProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="block w-full px-4 py-3 leading-tight text-black bg-gray-200 border border-gray-200 rounded appearance-none"
+          className="block w-full px-4 py-3 leading-tight text-black bg-gray-200 border border-gray-200 rounded appearance-none placeholder:text-gray-500" // Aqui adicionamos a classe do placeholder
         />
       )}
     </label>
