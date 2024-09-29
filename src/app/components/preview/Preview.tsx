@@ -101,7 +101,7 @@ const Preview: React.FC<PreviewProps> = ({
         ${
           showPresent
             ? "min-h-[95vh] max-h-[95vh]"
-            : "lg:min-h-[85vh] lg:max-h-[85vh]"
+            : "h-[90vh] lg:min-h-[85vh] lg:max-h-[85vh]"
         } 
         max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto`}
     >

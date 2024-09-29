@@ -25,23 +25,12 @@ export interface FormData {
 }
 
 const Home: React.FC = () => {
-  const [manName, setManName] = useState<string>("Mateus");
-  const [womanName, setWomanName] = useState<string>("Júlia");
-  const [startDate, setStartDate] = useState<string>("2022-01-01");
-  const [startTime, setStartTime] = useState<string>("00:00");
-  const [message, setMessage] =
-    useState<string>(`Só queria te dizer que você é tudo pra mim.
-  Desde que a gente se conheceu, minha vida ficou muito mais divertida.
-  
-  Seu sorriso? É a melhor parte do meu dia!
-  Quero passar cada momento com você, vivendo nossas loucuras e risadas.
-  
-  Te amo demais, de um jeito que nem consigo explicar.
-  
-  Beijinhos`);
-  const [youtubeLink, setYoutubeLink] = useState<string>(
-    "https://www.youtube.com/watch?v=oFbSL5RTrac&ab_channel=Jorge%26Mateus-Topic"
-  );
+  const [manName, setManName] = useState<string>("");
+  const [womanName, setWomanName] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>("");
+  const [message, setMessage] = useState<string>(``);
+  const [youtubeLink, setYoutubeLink] = useState<string>("");
   const [photos, setPhotos] = useState<File[]>([]);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [example, setExample] = useState<boolean>(true);
@@ -189,9 +178,11 @@ const Home: React.FC = () => {
               label="Início do namoro"
               type="date"
               value={startDate}
+              placeholder="22/07/2015"
               onChange={(e) => setStartDate(e.target.value)}
             />
             <FormInput
+              placeholder="00:00"
               label="Hora"
               type="time"
               value={startTime}
@@ -229,7 +220,7 @@ const Home: React.FC = () => {
             {isLoading ? (
               <>
                 {/* Spinner melhorado com Tailwind */}
-                Criando site... 
+                Criando site...
                 <div className="w-6 h-6 border-4 border-t-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
               </>
             ) : (
@@ -253,7 +244,7 @@ const Home: React.FC = () => {
             {isLoading ? (
               <>
                 {/* Spinner melhorado com Tailwind */}
-                Criando site... 
+                Criando site...
                 <div className="w-6 h-6 border-4 border-t-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
               </>
             ) : (
