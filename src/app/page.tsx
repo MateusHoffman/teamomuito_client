@@ -151,17 +151,16 @@ Beijinhos`,
   };
 
   const validateAndFilterInput = (input: string): string => {
-    // Usar expressão regular para permitir apenas letras (a-z, A-Z)
-    const filteredInput = input.replace(/[^a-zA-ZÀ-ÿ]/g, ""); // Regex que permite apenas letras acentuadas
+    // Usar expressão regular para permitir apenas letras (a-z, A-Z), acentos e sem espaços
+    const filteredInput = input.normalize("NFD").replace(/[^a-zA-ZÀ-ÿ]/g, ""); // Normaliza acentos e remove qualquer caractere fora do padrão
 
-    // Verificar se o input filtrado é diferente do original
-    if (filteredInput !== input) {
+    // Verificar se o input filtrado é diferente do original sem contar caracteres invisíveis
+    if (filteredInput.trim() !== input.trim()) {
       alert("Você só pode digitar letras, sem espaços.");
     }
 
     return filteredInput;
   };
-
   useEffect(() => {
     (async () => {
       const defaultData = await generateData();

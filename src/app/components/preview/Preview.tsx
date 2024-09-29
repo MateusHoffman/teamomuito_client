@@ -126,6 +126,7 @@ const Preview: React.FC<PreviewProps> = ({
                 src={currentPhotoUrl}
                 alt="Preview"
                 className="object-cover w-full h-full rounded-lg"
+                style={{ objectFit: "contain" }} // Adicione o object-fit: contain
               />
             ) : (
               <svg
@@ -172,7 +173,9 @@ const Preview: React.FC<PreviewProps> = ({
           "segundos"
         )}.`}</span>
       </div>
-      {(formData?.youtubeLink || formData?.message) && (<div className="my-5 border-[1px] w-[60%]" />)}
+      {(formData?.youtubeLink || formData?.message) && (
+        <div className="my-5 border-[1px] w-[60%]" />
+      )}
       <div className="flex flex-col flex-shrink-0 w-full gap-3 mx-auto text-center text-white break-words">
         {formData?.message.split("\n").map((line, index) => (
           <span key={index} className="block">
