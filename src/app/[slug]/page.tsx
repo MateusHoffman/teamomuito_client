@@ -83,7 +83,7 @@ const Result = ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+    <div className="flex items-center justify-center h-screen bg-[#030d21] lg:py-5">
       {isClient && (
         <Preview formData={formData} example={false} showPresent={true} />
       )}

@@ -97,13 +97,13 @@ const Preview: React.FC<PreviewProps> = ({
   return (
     // <div className="bg-[#202020] min-h-[85vh] max-h-[85vh] max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto">
     <div
-      className={`bg-[#202020] 
+      className={`
         ${
           showPresent
-            ? "min-h-[95vh] max-h-[95vh]"
-            : "max-h-[90vh] lg:min-h-[85vh] lg:max-h-[85vh]"
+            ? "h-[100vh] w-[100vw] lg:h-full lg:w-[35vw] lg:rounded-lg lg:bg-[#202020] bg-[#030d21]"
+            : "max-h-[90vh] lg:min-h-[85vh] lg:max-h-[85vh] bg-[#202020] rounded-lg"
         } 
-        max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto`}
+        p-5 shadow-2xl flex flex-col items-center overflow-y-auto`}
     >
       <div className="w-full px-2 py-1 mb-5 bg-white rounded-md">
         {formData?.manName && formData?.womanName ? (
