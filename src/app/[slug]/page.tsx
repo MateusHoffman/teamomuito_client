@@ -11,6 +11,7 @@ const Result = ({ params }: { params: { slug: string } }) => {
   const [isClient, setIsClient] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [formData, setFormData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -32,19 +33,38 @@ const Result = ({ params }: { params: { slug: string } }) => {
         const purchaseBySlug = await getPurchaseBySlug();
         purchaseBySlug && setFormData(purchaseBySlug.data);
         setLoadingData(false);
+        setData(purchaseBySlug);
       }
     })();
   }, [params?.slug]);
 
+  if (loadingData === true) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+        <h1 className="text-white">Carregando...</h1>
+      </div>
+    );
+  }
+
+  if (formData === null) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+        <h1 className="text-white">Página não existe</h1>
+      </div>
+    );
+  }
+
+  if (data?.paid === false) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+        <h1 className="text-white">Pagamento não foi concluído</h1>
+      </div>
+    );
+  }
+
   if (openPresent === false) {
     return (
       <div className="flex flex-col justify-center items-center h-screen bg-[#030d21] px-4 max-w-screen w-screen">
-        {/* <Image
-          src={LogoTeAmoMuito}
-          alt="Logo Te Amo Muito"
-          objectFit="contain"
-          className="absolute top-9 py-8 w-[90vw] lg:w[30vw]"
-        /> */}
         <div className="w-[90vw] lg:w-[20vw] h-[25vh] absolute top-9">
           <Image
             src={LogoTeAmoMuito}
@@ -62,22 +82,6 @@ const Result = ({ params }: { params: { slug: string } }) => {
             ❤️ Abrir meu presente ❤️
           </span>
         </button>
-      </div>
-    );
-  }
-
-  if (loadingData === true) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
-        <h1 className="text-white">Carregando...</h1>
-      </div>
-    );
-  }
-
-  if (formData === null) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
-        <h1 className="text-white">Página não existe</h1>
       </div>
     );
   }
