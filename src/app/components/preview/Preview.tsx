@@ -20,6 +20,7 @@ const Preview: React.FC<PreviewProps> = ({
   example,
   showPresent,
 }) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [timeDifference, setTimeDifference] = useState<TimeDifference>({
     years: 0,
@@ -56,7 +57,7 @@ const Preview: React.FC<PreviewProps> = ({
   }, [formData]);
 
   useEffect(() => {
-    setCurrentPhotoIndex(0)
+    setCurrentPhotoIndex(0);
     if (formData?.photos && formData?.photos?.length > 1) {
       const intervalId = setInterval(() => {
         setCurrentPhotoIndex(
@@ -102,7 +103,7 @@ const Preview: React.FC<PreviewProps> = ({
         ${
           showPresent
             ? "h-[100vh] w-[100vw] lg:h-full lg:w-[35vw] lg:rounded-lg lg:bg-[#202020] bg-[#030d21]"
-            : "max-h-[90vh] lg:min-h-[85vh] lg:max-h-[85vh] bg-[#202020] rounded-lg"
+            : "lg:min-h-[85vh] lg:max-h-[85vh] bg-[#202020] rounded-lg"
         } 
         p-5 shadow-2xl flex flex-col items-center overflow-y-auto`}
     >
@@ -173,7 +174,7 @@ const Preview: React.FC<PreviewProps> = ({
           "segundos"
         )}.`}</span>
       </div>
-      {(formData?.youtubeLink || formData?.message) && (
+      {((formData?.youtubeLink && errorMessage === null) || formData?.message) && (
         <div className="my-5 border-[1px] w-[60%]" />
       )}
       <div className="flex flex-col flex-shrink-0 w-full gap-3 mx-auto text-center text-white break-words">
@@ -184,20 +185,32 @@ const Preview: React.FC<PreviewProps> = ({
         ))}
       </div>
       {formData?.youtubeLink && (
-        <div className="flex items-center justify-center w-full mt-9">
-          <ReactPlayer
-            url={formData.youtubeLink}
-            playing
-            loop
-            controls
-            width="100%"
-            volume={example ? 0.3 : 0.5}
-            config={{
-              youtube: {
-                playerVars: { showinfo: 1 },
-              },
-            }}
-          />
+        <div className="flex flex-col items-center justify-center w-full mt-9">
+          {errorMessage === null && (
+            <ReactPlayer
+              url={formData.youtubeLink}
+              playing
+              loop
+              controls
+              width="100%"
+              volume={example ? 0.3 : 0.5}
+              config={{
+                youtube: {
+                  playerVars: { showinfo: 1 },
+                },
+              }}
+              onError={() =>
+                setErrorMessage(
+                  "Desculpe, mas a música selecionada não está disponível ou o link é inválido."
+                )
+              }
+            />
+          )}
+          {errorMessage && !showPresent && (
+            <span className="mt-2 text-sm text-center text-white">
+              {errorMessage}
+            </span>
+          )}
         </div>
       )}
     </div>
