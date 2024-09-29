@@ -56,6 +56,7 @@ const Preview: React.FC<PreviewProps> = ({
   }, [formData]);
 
   useEffect(() => {
+    setCurrentPhotoIndex(0)
     if (formData?.photos && formData?.photos?.length > 1) {
       const intervalId = setInterval(() => {
         setCurrentPhotoIndex(
