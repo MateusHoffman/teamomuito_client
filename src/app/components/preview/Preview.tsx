@@ -127,7 +127,6 @@ const Preview: React.FC<PreviewProps> = ({
                 src={currentPhotoUrl}
                 alt="Preview"
                 className="object-cover w-full h-full rounded-lg"
-                style={{ objectFit: "contain" }} // Adicione o object-fit: contain
               />
             ) : (
               <svg

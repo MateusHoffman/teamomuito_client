@@ -28,7 +28,7 @@ export function resizeAndConvertImages(photos: File[]): Promise<string[]> {
         };
 
         img.onload = () => {
-          const width = 300
+          const width = 500
           canvas.width = width;
           canvas.height = width/(4/5);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
