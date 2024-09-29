@@ -45,6 +45,7 @@ const Home: React.FC = () => {
   const [photos, setPhotos] = useState<File[]>([]);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [example, setExample] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const generateData = async (): Promise<FormData> => {
     const isEmpty =
@@ -99,37 +100,48 @@ const Home: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    try {
+      setIsLoading(true);
+      e.preventDefault();
 
-    const missingFields = [
-      validateField(manName, "Primeiro nome dele"),
-      validateField(womanName, "Primeiro nome dela"),
-      validateField(startDate, "Data de início do namoro"),
-      validateField(startTime, "Hora"),
-      validateField(photos, "Fotos"),
-    ]
-      .filter(Boolean)
-      .join("");
+      const missingFields = [
+        validateField(manName, "Primeiro nome dele"),
+        validateField(womanName, "Primeiro nome dela"),
+        validateField(startDate, "Data de início do namoro"),
+        validateField(startTime, "Hora"),
+        validateField(photos, "Fotos"),
+      ]
+        .filter(Boolean)
+        .join("");
 
-    if (missingFields) {
-      alert(missingFields);
-    } else {
-      if (formData && Array.isArray(formData.photos) && formData.photos.every(file => file instanceof File)) {
-        const photosBase64 = await resizeAndConvertImages(formData?.photos);
-        const content = {...formData, photos: photosBase64};
-        console.log("content: ", content);
-        const api = process.env.NEXT_PUBLIC_BASE_URL;
-        const path = "/checkout";
-        const response = await fetch(api + path, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(content),
-        });
-        const data = await response.json();
-        if (data.url) {
-          window.location.href = data.url;
+      if (missingFields) {
+        alert(missingFields);
+      } else {
+        if (
+          formData &&
+          Array.isArray(formData.photos) &&
+          formData.photos.every((file) => file instanceof File)
+        ) {
+          const photosBase64 = await resizeAndConvertImages(formData?.photos);
+          const content = { ...formData, photos: photosBase64 };
+          console.log("content: ", content);
+          const api = process.env.NEXT_PUBLIC_SERVER_URL;
+          const path = "/checkout";
+          const response = await fetch(api + path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(content),
+          });
+          const data = await response.json();
+          if (data.url) {
+            window.location.href = data.url;
+          }
         }
       }
+    } catch (error) {
+      console.error("Error", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -211,17 +223,26 @@ const Home: React.FC = () => {
         </form>
       </div>
       <div className="lg:w-[40vw] -mt-7 lg:pt-0 pt-3">
-        <div className="flex flex-col gap-2 lg:sticky lg:top-0 pt-7">
+        <div className="flex flex-col gap-2 lg:fixed lg:top-0 pt-7 lg:w-[25vw]">
           <span className="block text-xs font-bold tracking-wide text-center text-white uppercase">
             {example ? "Exemplo de como vai ficar 👇" : "Como vai ficar 👇"}
           </span>
           <Preview formData={formData} example={example} />
           <button
             type="submit"
-            className="block py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:hidden"
+            className="flex items-center justify-center block gap-2 py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:hidden"
             onClick={handleSubmit}
+            disabled={isLoading} // Desativa o botão enquanto estiver carregando
           >
-            Criar meu site
+            {isLoading ? (
+              <>
+                {/* Spinner melhorado com Tailwind */}
+                Criando site... 
+                <div className="w-6 h-6 border-4 border-t-4 border-gray-300 rounded-full border-t-black animate-spin"></div>
+              </>
+            ) : (
+              "Criar meu site"
+            )}
           </button>
         </div>
       </div>
