@@ -28,12 +28,44 @@ export function resizeAndConvertImages(photos: File[]): Promise<string[]> {
         };
 
         img.onload = () => {
-          const width = 500
-          canvas.width = width;
-          canvas.height = width/(4/5);
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const base64 = canvas.toDataURL("image/png");
-          resolve(base64);
+          const maxSize = 500000
+          if (file.size <= maxSize) {
+            // Se o tamanho do arquivo for menor ou igual a 500KB, não faz nada
+            const base64 = reader.result as string;
+            return resolve(base64);
+          }
+
+          // Se o tamanho do arquivo for maior que 500KB, redimensiona a imagem
+          let width = img.width;
+          let height = img.height;
+
+          // Calcula a nova largura e altura mantendo a proporção
+          const aspectRatio = height / width;
+
+          // Ajusta a largura e a altura para que o tamanho do arquivo não exceda 500KB
+          while (true) {
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const base64 = canvas.toDataURL("image/png");
+
+            // Converte a string base64 em um Blob e verifica o tamanho
+            const byteString = atob(base64.split(",")[1]);
+            const bytes = new Uint8Array(byteString.length);
+            for (let i = 0; i < byteString.length; i++) {
+              bytes[i] = byteString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: "image/png" });
+
+            if (blob.size <= maxSize) {
+              resolve(base64);
+              break;
+            }
+
+            // Se a imagem ainda for muito grande, diminui o tamanho
+            width *= 0.9; // Reduz a largura em 10%
+            height = width * aspectRatio; // Ajusta a altura para manter a proporção
+          }
         };
 
         img.onerror = (error) =>
