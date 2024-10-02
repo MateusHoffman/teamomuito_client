@@ -29,29 +29,31 @@ export const calculateTimeDifference = (
     return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
   }
 
-  // Cria um objeto Date a partir das informações fornecidas
+  // Cria um objeto Date a partir das informações fornecidas no fuso horário local
   const startDate = new Date(year, month - 1, day, hours, minutes);
 
-  // Data e hora atuais
+  // Data e hora atuais (fuso horário local do dispositivo)
   const now = new Date();
 
   // Calcula a diferença em anos
-  const years = differenceInYears(now, startDate);
+  const years = Math.abs(differenceInYears(now, startDate));
 
   // Subtrai os anos da data atual para calcular os meses restantes
   const dateAfterYears = subYears(now, years);
 
   // Calcula a diferença em meses, levando em conta o calendário
-  const months = differenceInCalendarMonths(dateAfterYears, startDate);
+  const months = Math.abs(
+    differenceInCalendarMonths(dateAfterYears, startDate)
+  );
 
   // Subtrai os meses da data atual para calcular os dias restantes
   const dateAfterMonths = subMonths(dateAfterYears, months);
-  const days = differenceInDays(dateAfterMonths, startDate);
+  const days = Math.abs(differenceInDays(dateAfterMonths, startDate));
 
   // Agora, vamos calcular horas, minutos e segundos diretamente da data original
-  const remainingHours = differenceInHours(now, startDate) % 24;
-  const remainingMinutes = differenceInMinutes(now, startDate) % 60;
-  const remainingSeconds = differenceInSeconds(now, startDate) % 60;
+  const remainingHours = Math.abs(differenceInHours(now, startDate) % 24);
+  const remainingMinutes = Math.abs(differenceInMinutes(now, startDate) % 60);
+  const remainingSeconds = Math.abs(differenceInSeconds(now, startDate) % 60);
 
   return {
     years,
