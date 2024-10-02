@@ -20,6 +20,7 @@ import { ProductData, useFormContext } from "./context/FormContext";
 import { createCodePix } from "./services/purchaseService";
 
 export interface FormData {
+  email: string;
   manName: string;
   womanName: string;
   startDate: string;
@@ -28,7 +29,6 @@ export interface FormData {
   youtubeLink: string;
   photos: File[] | StaticImageData[];
   slug?: string;
-  
 }
 
 const Home: React.FC = () => {
@@ -36,6 +36,7 @@ const Home: React.FC = () => {
 
   const { setProductData } = useFormContext();
 
+  const [email, setEmail] = useState<string>(""); // Joao
   const [manName, setManName] = useState<string>(""); // Joao
   const [womanName, setWomanName] = useState<string>(""); // Maria
   const [startDate, setStartDate] = useState<string>(""); // 2022-01-01
@@ -55,6 +56,7 @@ const Home: React.FC = () => {
         !startDate &&
         !startTime &&
         !message &&
+        !email &&
         !youtubeLink &&
         photos.length === 0;
       setExample(isEmpty);
@@ -63,6 +65,7 @@ const Home: React.FC = () => {
 
       if (isEmpty) {
         return {
+          email: "",
           manName: "Joao",
           womanName: "Maria",
           startDate: "2022-01-01",
@@ -90,11 +93,13 @@ Beijinhos`,
         message,
         youtubeLink,
         photos,
+        email,
       };
     } catch (error) {
       alert("Ocorreu um erro ao gerar os dados.");
       console.error(error);
       return {
+        email: "",
         manName: "",
         womanName: "",
         startDate: "",
@@ -136,6 +141,9 @@ Beijinhos`,
       if (missingFields) {
         alert(missingFields);
       } else {
+        if (!validateEmail(email)) {
+          return
+        }
         if (
           formData &&
           Array.isArray(formData.photos) &&
@@ -152,7 +160,7 @@ Beijinhos`,
           const content: ProductData = {
             slug: slug,
             ...formData,
-            photos: photosBase64
+            photos: photosBase64,
           };
 
           const codePix = await createCodePix(content);
@@ -162,7 +170,7 @@ Beijinhos`,
             qr_code: codePix,
           });
 
-          router.push("/pagamento");
+          router.push(`${slug}/pagamento`);
         }
       }
     } catch (error) {
@@ -188,12 +196,22 @@ Beijinhos`,
     return filteredInput;
   };
 
+  const validateEmail = (email: string): boolean => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+      alert("Por favor, insira um e-mail válido");
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   useEffect(() => {
     (async () => {
       const defaultData = await generateData();
       setFormData(defaultData);
     })();
-  }, [manName, womanName, startDate, startTime, message, youtubeLink, photos]);
+  }, [manName, womanName, startDate, startTime, message, youtubeLink, photos, email]);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -267,6 +285,13 @@ Beijinhos`,
             onChange={(e) => setMessage(e.target.value)}
           />
           <PhotoUploader onPhotoChange={handlePhotoChange} />
+          <FormInput
+            label="Email onde recebera o link"
+            type="text"
+            placeholder="nome@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <button
             type="submit"
             className="items-center justify-center hidden gap-2 py-4 mt-4 text-2xl font-bold text-black bg-white rounded-md lg:flex"
