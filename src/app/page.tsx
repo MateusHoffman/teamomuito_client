@@ -8,8 +8,16 @@ import Photo2 from "@/app/assets/images/photo2.png";
 import Photo3 from "@/app/assets/images/photo3.png";
 import Photo4 from "@/app/assets/images/photo4.png";
 import { StaticImageData } from "next/image";
-import { resizeAndConvertImages, validateField } from "./utils/helpers";
+import {
+  generateId,
+  removeAccents,
+  resizeAndConvertImages,
+  validateField,
+} from "./utils/helpers";
 import "@/app/assets/styles/scrollbar.css";
+import { useRouter } from "next/navigation";
+import { ProductData, useFormContext } from "./context/FormContext";
+import { createCodePix } from "./services/purchaseService";
 
 export interface FormData {
   manName: string;
@@ -19,13 +27,19 @@ export interface FormData {
   message: string;
   youtubeLink: string;
   photos: File[] | StaticImageData[];
+  slug?: string;
+  
 }
 
 const Home: React.FC = () => {
-  const [manName, setManName] = useState<string>("");
-  const [womanName, setWomanName] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [startTime, setStartTime] = useState<string>("");
+  const router = useRouter();
+
+  const { setProductData } = useFormContext();
+
+  const [manName, setManName] = useState<string>("Joao");
+  const [womanName, setWomanName] = useState<string>("Maria");
+  const [startDate, setStartDate] = useState<string>("2022-01-01");
+  const [startTime, setStartTime] = useState<string>("00:00");
   const [message, setMessage] = useState<string>(``);
   const [youtubeLink, setYoutubeLink] = useState<string>("");
   const [photos, setPhotos] = useState<File[]>([]);
@@ -128,18 +142,27 @@ Beijinhos`,
           formData.photos.every((file) => file instanceof File)
         ) {
           const photosBase64 = await resizeAndConvertImages(formData?.photos);
-          const content = { ...formData, photos: photosBase64 };
-          const api = process.env.NEXT_PUBLIC_SERVER_URL;
-          const path = "/checkout";
-          const response = await fetch(api + path, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(content),
+
+          const slug = encodeURIComponent(
+            `${generateId()}-${removeAccents(
+              formData?.manName
+            )}-e-${removeAccents(formData?.womanName)}`
+          );
+
+          const content: ProductData = {
+            slug: slug,
+            ...formData,
+            photos: photosBase64
+          };
+
+          const codePix = await createCodePix(content);
+
+          setProductData({
+            ...content,
+            qr_code: codePix,
           });
-          const data = await response.json();
-          if (data.url) {
-            window.location.href = data.url;
-          }
+
+          router.push("/pagamento");
         }
       }
     } catch (error) {
@@ -159,7 +182,7 @@ Beijinhos`,
       alert(
         "Você só pode digitar letras (A-Z), sem acentos, números, emojis ou espaços."
       );
-      return prev
+      return prev;
     }
 
     return filteredInput;

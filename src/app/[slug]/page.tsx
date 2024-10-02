@@ -38,30 +38,6 @@ const Result = ({ params }: { params: { slug: string } }) => {
     })();
   }, [params?.slug]);
 
-  if (loadingData === true) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
-        <h1 className="text-white">Carregando...</h1>
-      </div>
-    );
-  }
-
-  if (formData === null) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
-        <h1 className="text-white">Página não existe</h1>
-      </div>
-    );
-  }
-
-  if (data?.paid === false) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
-        <h1 className="text-white">Pagamento não foi concluído</h1>
-      </div>
-    );
-  }
-
   if (openPresent === false) {
     return (
       <div className="flex flex-col justify-center items-center h-screen bg-[#030d21] px-4 max-w-screen w-screen">
@@ -82,6 +58,30 @@ const Result = ({ params }: { params: { slug: string } }) => {
             ❤️ Abrir meu presente ❤️
           </span>
         </button>
+      </div>
+    );
+  }
+
+  if (loadingData === true) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+        <h1 className="text-white">Carregando...</h1>
+      </div>
+    );
+  }
+
+  if (formData === null) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+        <h1 className="text-white">Página não existe</h1>
+      </div>
+    );
+  }
+
+  if (data?.paymentStatus !== 'approved') {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#030d21] px-4">
+        <h1 className="text-white">Pagamento não foi concluído</h1>
       </div>
     );
   }
