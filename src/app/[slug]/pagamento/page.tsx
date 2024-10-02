@@ -3,9 +3,13 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import LogoTeAmoMuito from "@/app/assets/images/logo-te-amo-muito.png";
-import { useFormContext } from "../context/FormContext";
+import { useFormContext } from "../../context/FormContext";
 import { useRouter } from "next/navigation";
-import { createCodePix, getPurchaseBySlug } from "../services/purchaseService";
+import {
+  createCodePix,
+  getPurchaseBySlug,
+} from "../../services/purchaseService";
+import { sendEmail } from "@/app/services/emailService";
 
 export default function Page() {
   const router = useRouter();
@@ -132,17 +136,20 @@ export default function Page() {
   useEffect(() => {
     if (paymentStatus === "approved") {
       router.push(`/${productData?.slug}/QRCode`);
+      sendEmail(productData!);
     }
   }, [paymentStatus]);
 
   useEffect(() => {
     if (productData === null) {
-      router.push('/')
+      router.push("/");
     }
-  }, [])
+  }, []);
 
   if (productData === null) {
-    return (<div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen"></div>)
+    return (
+      <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen"></div>
+    );
   }
 
   return (
