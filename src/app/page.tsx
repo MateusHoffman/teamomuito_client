@@ -36,10 +36,10 @@ const Home: React.FC = () => {
 
   const { setProductData } = useFormContext();
 
-  const [manName, setManName] = useState<string>("Joao");
-  const [womanName, setWomanName] = useState<string>("Maria");
-  const [startDate, setStartDate] = useState<string>("2022-01-01");
-  const [startTime, setStartTime] = useState<string>("00:00");
+  const [manName, setManName] = useState<string>(""); // Joao
+  const [womanName, setWomanName] = useState<string>(""); // Maria
+  const [startDate, setStartDate] = useState<string>(""); // 2022-01-01
+  const [startTime, setStartTime] = useState<string>(""); // 00:00
   const [message, setMessage] = useState<string>(``);
   const [youtubeLink, setYoutubeLink] = useState<string>("");
   const [photos, setPhotos] = useState<File[]>([]);
