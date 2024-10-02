@@ -24,10 +24,10 @@ export default function Page() {
   const qrCodeRef = useRef<HTMLDivElement>(null);
 
   function handleCopy() {
-    const link = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${productData?.slug}`;
+    const text = qrCode!;
 
     navigator.clipboard
-      .writeText(link)
+      .writeText(text)
       .then(() => {
         // Muda o texto do botão para "Código copiado"
         setButtonText("Código copiado");
