@@ -15,7 +15,6 @@ export const createCodePix = async (content: ProductData) => {
 };
 
 export const getPurchaseBySlug = async (slug: string) => {
-  console.log('getPurchaseBySlug');
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const path = "/getPurchaseBySlug";
   const query = `?slug=${slug}`;

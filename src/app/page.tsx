@@ -36,7 +36,7 @@ const Home: React.FC = () => {
 
   const { setProductData } = useFormContext();
 
-  const [email, setEmail] = useState<string>(""); // Joao
+  const [email, setEmail] = useState<string>(""); // mateus0hoffman@gmail.com
   const [manName, setManName] = useState<string>(""); // Joao
   const [womanName, setWomanName] = useState<string>(""); // Maria
   const [startDate, setStartDate] = useState<string>(""); // 2022-01-01

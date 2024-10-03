@@ -9,6 +9,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [buttonText, setButtonText] = useState(
     "Clique aqui para copiar o link"
   );
+  const [showBtn, setShowBtn] = useState(false);
   const [showLink, setShowLink] = useState(false);
   const qrCodeRef = useRef<HTMLDivElement>(null); // Ref para o contêiner do QR Code
 
@@ -50,12 +51,14 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setShowLink(true);
-  //   }, 1500);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  useEffect(() => {
+    if (showLink === true) {
+      const timer = setTimeout(() => {
+        setShowBtn(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLink]);
 
   return (
     <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen">
@@ -79,8 +82,8 @@ export default function Page({ params }: { params: { slug: string } }) {
               Esse é o Link e o QR Code que redireciona para o seu site
             </span>
             <span className="block mb-2 text-xs font-bold tracking-wide text-center text-white uppercase">
-              Atenção: Guarde com cuidado. Se perder, não será possível
-              recuperá-los.
+              Atenção: Enviamos o link para o seu email, verifique na caixa de
+              spam.
             </span>
             <div
               ref={qrCodeRef} // Usando ref aqui para capturar o QR Code
@@ -108,14 +111,16 @@ export default function Page({ params }: { params: { slug: string } }) {
               </span>
             </button>
             <div className="flex-1" />
-            <button
-              onClick={handleRedirectSite}
-              className="bg-white rounded-lg w-[70vw] lg:w-[17vw] h-14 mt-7 p-2 flex items-center justify-center mb-7"
-            >
-              <span className="font-bold tracking-wide text-center uppercase">
-                Acessar meu site
-              </span>
-            </button>
+            {showBtn && (
+              <button
+                onClick={handleRedirectSite}
+                className="bg-white rounded-lg w-[70vw] lg:w-[17vw] h-14 mt-7 p-2 flex items-center justify-center mb-7"
+              >
+                <span className="font-bold tracking-wide text-center uppercase">
+                  Acessar meu site
+                </span>
+              </button>
+            )}
           </>
         ) : (
           <>

@@ -11,7 +11,7 @@ import {
 } from "../../services/purchaseService";
 import { sendEmail } from "@/app/services/emailService";
 
-export default function Page() {
+export default function Page({ params }: { params: { slug: string } }) {
   const router = useRouter();
   const { productData, setProductData } = useFormContext();
 
@@ -134,23 +134,25 @@ export default function Page() {
   }, [productData]);
 
   useEffect(() => {
-    if (paymentStatus === "approved") {
+    if (paymentStatus === "approved" && productData) {
       router.push(`/${productData?.slug}/QRCode`);
       sendEmail(productData!);
     }
-  }, [paymentStatus]);
+  }, [paymentStatus, productData]);
 
   useEffect(() => {
-    if (productData === null) {
-      router.push("/");
-    }
+    (async () => {
+      
+      const purchase = await getPurchaseBySlug(params?.slug)
+      setProductData(purchase)
+    })()
   }, []);
 
-  if (productData === null) {
-    return (
-      <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen"></div>
-    );
-  }
+  // if (productData === null) {
+  //   return (
+  //     <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen"></div>
+  //   );
+  // }
 
   return (
     <div className="justify-center items-center flex h-screen bg-[#030d21] px-4 max-w-screen w-screen">
