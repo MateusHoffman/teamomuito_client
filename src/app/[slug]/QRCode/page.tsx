@@ -26,7 +26,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       })
       .catch((err) => {
         console.error("Erro ao copiar o link: ", err);
-      });
+      })
   }
 
   function handleRedirectSite() {
