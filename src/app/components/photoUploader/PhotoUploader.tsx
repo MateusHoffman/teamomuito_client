@@ -10,10 +10,10 @@ const PhotoUploader: React.FC<PhotoUploaderProps> = ({ onPhotoChange }) => {
     if (e.target.files) {
       const files = e.target.files;
       // Verifica se o número de arquivos é maior que 10
-      if (files.length > 10) {
-        alert("Você pode selecionar no máximo 10 fotos.");
-        return; // Não chama onPhotoChange
-      }
+      // if (files.length > 10) {
+      //   alert("Você pode selecionar no máximo 10 fotos.");
+      //   return; // Não chama onPhotoChange
+      // }
       onPhotoChange(files);
     }
   };
