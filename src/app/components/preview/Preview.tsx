@@ -125,7 +125,7 @@ const Preview: React.FC<PreviewProps> = ({
       </div>
 
       {/* Mantém a proporção de 4:5 */}
-      <div className="relative w-[80%] border-2 border-white rounded-lg flex justify-center items-center">
+      <div className="relative w-[90%] border-2 border-white rounded-lg flex justify-center items-center">
         <div
           className="w-full"
           style={{ paddingBottom: "125%", position: "relative" }}
