@@ -8,6 +8,13 @@ import {
 import { StaticImageData } from "next/image";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
+import { Great_Vibes } from "next/font/google";
+
+const greatVibes = Great_Vibes({
+  weight: ["400"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 interface PreviewProps {
   formData: FormData | null;
@@ -115,6 +122,14 @@ const Preview: React.FC<PreviewProps> = ({
         )}
       </div>
 
+      <div className="w-full mb-5">
+        {formData?.manName && formData?.womanName && (
+          <span
+            className={`flex justify-center text-center text-4xl text-white ${greatVibes.className}`}
+          >{`${formData.manName} ❤️ ${formData.womanName}`}</span>
+        )}
+      </div>
+
       {/* Mantém a proporção de 4:5 */}
       <div className="relative w-[80%] border-2 border-white rounded-lg flex justify-center items-center">
         <div
@@ -174,9 +189,8 @@ const Preview: React.FC<PreviewProps> = ({
           "segundos"
         )}.`}</span>
       </div>
-      {((formData?.youtubeLink && errorMessage === null) || formData?.message) && (
-        <div className="my-5 border-[1px] w-[60%]" />
-      )}
+      {((formData?.youtubeLink && errorMessage === null) ||
+        formData?.message) && <div className="my-5 border-[1px] w-[60%]" />}
       <div className="flex flex-col flex-shrink-0 w-full gap-3 mx-auto text-center text-white break-words">
         {formData?.message.split("\n").map((line, index) => (
           <span key={index} className="block">
