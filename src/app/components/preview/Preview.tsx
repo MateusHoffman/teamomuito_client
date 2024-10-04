@@ -1,14 +1,13 @@
-"use client";
-import "@/app/assets/styles/scrollbar.css";
+import React, { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { Great_Vibes } from "next/font/google";
 import { FormData } from "@/app/page";
 import {
   calculateTimeDifference,
   TimeDifference,
 } from "@/app/utils/CalculateTimeDifference";
 import { StaticImageData } from "next/image";
-import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import { Great_Vibes } from "next/font/google";
+import "@/app/assets/styles/scrollbar.css";
 
 const greatVibes = Great_Vibes({
   weight: ["400"],
@@ -29,6 +28,7 @@ const Preview: React.FC<PreviewProps> = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true); // Estado para controlar a transição
   const [timeDifference, setTimeDifference] = useState<TimeDifference>({
     years: 0,
     months: 0,
@@ -52,13 +52,8 @@ const Preview: React.FC<PreviewProps> = ({
         setTimeDifference({ years, months, days, hours, minutes, seconds });
       };
 
-      // Atualiza imediatamente ao montar
       updateCurrentTime();
-
-      // Configura o intervalo para atualizar a cada segundo
       const intervalId = setInterval(updateCurrentTime, 1000);
-
-      // Limpa o intervalo ao desmontar
       return () => clearInterval(intervalId);
     }
   }, [formData]);
@@ -67,30 +62,31 @@ const Preview: React.FC<PreviewProps> = ({
     setCurrentPhotoIndex(0);
     if (formData?.photos && formData?.photos?.length > 1) {
       const intervalId = setInterval(() => {
-        setCurrentPhotoIndex(
-          (prevIndex) => (prevIndex + 1) % (formData.photos?.length ?? 1)
-        );
-      }, 3000); // Troca a foto a cada 3 segundos
+        setFadeIn(false); // Inicia o fade-out
+
+        setTimeout(() => {
+          setCurrentPhotoIndex(
+            (prevIndex) => (prevIndex + 1) % (formData.photos?.length ?? 1)
+          );
+          setFadeIn(true); // Inicia o fade-in
+        }, 500); // Tempo do fade-out
+      }, 3500); // Troca a foto a cada 3.5 segundos
 
       return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar
     }
   }, [formData]);
 
-  // Obtenha a URL da foto atual
   const currentPhotoUrl = (() => {
     const currentPhoto = formData?.photos?.[currentPhotoIndex];
 
-    // Verifica se é uma instância de File (upload do usuário)
     if (currentPhoto instanceof File) {
       return URL.createObjectURL(currentPhoto);
     }
 
-    // Verifica se é uma string (provavelmente um caminho de uma imagem estática)
     if (typeof currentPhoto === "string") {
       return currentPhoto;
     }
 
-    // Verifica se é StaticImageData (imagens importadas estaticamente)
     if (
       currentPhoto &&
       typeof currentPhoto === "object" &&
@@ -99,12 +95,10 @@ const Preview: React.FC<PreviewProps> = ({
       return (currentPhoto as StaticImageData).src;
     }
 
-    // Caso não haja uma foto válida
     return "";
   })();
 
   return (
-    // <div className="bg-[#202020] min-h-[85vh] max-h-[85vh] max-w-full p-5 rounded-lg shadow-2xl flex flex-col items-center overflow-y-auto">
     <div
       className={`
         ${
@@ -137,12 +131,14 @@ const Preview: React.FC<PreviewProps> = ({
           style={{ paddingBottom: "125%", position: "relative" }}
         >
           <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full">
-            {/* Renderiza a imagem se existir */}
+            {/* Renderiza a imagem com a transição suave */}
             {currentPhotoUrl ? (
               <img
                 src={currentPhotoUrl}
                 alt="Preview"
-                className="object-cover w-full h-full rounded-lg"
+                className={`object-cover w-full h-full rounded-lg transition-opacity duration-1000 ${
+                  fadeIn ? "opacity-100" : "opacity-0"
+                }`}
               />
             ) : (
               <svg
