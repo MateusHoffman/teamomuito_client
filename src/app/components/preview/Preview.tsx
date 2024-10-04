@@ -108,7 +108,7 @@ const Preview: React.FC<PreviewProps> = ({
         } 
         p-5 shadow-2xl flex flex-col items-center overflow-y-auto`}
     >
-      <div className="w-full px-2 py-1 mb-5 bg-white rounded-md">
+      <div className="w-full px-2 py-1 bg-gray-200 rounded-md mb-7">
         {formData?.manName && formData?.womanName ? (
           <span className="flex justify-center text-center">{`teamomuito.com.br/${formData.manName}-e-${formData.womanName}`}</span>
         ) : (
@@ -116,7 +116,7 @@ const Preview: React.FC<PreviewProps> = ({
         )}
       </div>
 
-      <div className="w-full mb-5">
+      <div className="w-full mb-7">
         {formData?.manName && formData?.womanName && (
           <span
             className={`flex justify-center text-center text-4xl text-white ${greatVibes.className}`}
@@ -160,7 +160,7 @@ const Preview: React.FC<PreviewProps> = ({
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center mt-4 text-white">
+      <div className="flex flex-col items-center justify-center mt-6 text-white">
         <span className="pb-2">Estamos juntos há:</span>
         <span>{`${formatTimeUnit(
           timeDifference.years,
@@ -186,7 +186,7 @@ const Preview: React.FC<PreviewProps> = ({
         )}.`}</span>
       </div>
       {((formData?.youtubeLink && errorMessage === null) ||
-        formData?.message) && <div className="my-5 border-[1px] w-[60%]" />}
+        formData?.message) && <div className="my-10 border-[1px] w-[60%]" />}
       <div className="flex flex-col flex-shrink-0 w-full gap-3 mx-auto text-center text-white break-words">
         {formData?.message.split("\n").map((line, index) => (
           <span key={index} className="block">
