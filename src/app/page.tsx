@@ -142,7 +142,7 @@ Beijinhos`,
         alert(missingFields);
       } else {
         if (!validateEmail(email)) {
-          return
+          return;
         }
         if (
           formData &&
@@ -211,7 +211,16 @@ Beijinhos`,
       const defaultData = await generateData();
       setFormData(defaultData);
     })();
-  }, [manName, womanName, startDate, startTime, message, youtubeLink, photos, email]);
+  }, [
+    manName,
+    womanName,
+    startDate,
+    startTime,
+    message,
+    youtubeLink,
+    photos,
+    email,
+  ]);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -231,9 +240,14 @@ Beijinhos`,
     <div className="w-screen min-h-screen bg-[#030d21] lg:flex lg:justify-center lg:gap-14 lg:px-14 lg:py-7 px-4 py-4 overflow-x-hidden">
       <div className="lg:w-[60vw]">
         <form className="flex flex-col h-full gap-3">
-          <h1 className="pb-8 text-6xl font-bold text-center text-white">
-            Presentei seu amor
+          <h1 className="pb-2 text-6xl font-bold text-left text-white text-[#ff4e6dd9]">
+            Surpreenda Quem Você Ama
           </h1>
+          <p className="pb-6 text-base font-bold text-left text-white">
+            Crie uma
+            homenagem personalizada para seu relacionamento com data, fotos e a
+            música do casal, e deixe o QR Code revelar tudo!
+          </p>
           <div className="flex flex-row w-full gap-4">
             <FormInput
               label="Primeiro nome dele"
