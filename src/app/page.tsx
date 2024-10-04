@@ -244,9 +244,8 @@ Beijinhos`,
             Surpreenda Quem Você Ama
           </h1>
           <p className="pb-6 text-base font-bold text-left text-white">
-            Crie uma
-            homenagem personalizada para seu relacionamento com data, fotos e a
-            música do casal, e deixe o QR Code revelar tudo!
+            Crie uma homenagem personalizada para seu relacionamento com data,
+            fotos e a música do casal, e deixe o QR Code revelar tudo!
           </p>
           <div className="flex flex-row w-full gap-4">
             <FormInput
