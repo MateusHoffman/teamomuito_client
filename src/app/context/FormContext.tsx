@@ -8,7 +8,7 @@ export interface ProductData {
   startTime: string;
   message: string;
   youtubeLink: string;
-  photos: File[] | string[];
+  photos: string[];
   slug?: string;
   qr_code?: string;
 }

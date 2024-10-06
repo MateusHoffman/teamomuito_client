@@ -18,6 +18,7 @@ import "@/app/assets/styles/scrollbar.css";
 import { useRouter } from "next/navigation";
 import { ProductData, useFormContext } from "./context/FormContext";
 import { createCodePix } from "./services/purchaseService";
+import { uploadImages } from "./services/imageService";
 
 export interface FormData {
   email: string;
@@ -27,7 +28,7 @@ export interface FormData {
   startTime: string;
   message: string;
   youtubeLink: string;
-  photos: File[] | StaticImageData[];
+  photos: File[];
   slug?: string;
 }
 
@@ -149,7 +150,7 @@ Beijinhos`,
           Array.isArray(formData.photos) &&
           formData.photos.every((file) => file instanceof File)
         ) {
-          const photosBase64 = await resizeAndConvertImages(formData?.photos);
+          // const photosBase64 = await resizeAndConvertImages(formData?.photos);
 
           const slug = encodeURIComponent(
             `${generateId()}-${removeAccents(
@@ -157,10 +158,12 @@ Beijinhos`,
             )}-e-${removeAccents(formData?.womanName)}`
           );
 
+          const photosUrls = await uploadImages(slug, formData?.photos);
+
           const content: ProductData = {
             slug: slug,
             ...formData,
-            photos: photosBase64,
+            photos: photosUrls,
           };
 
           const codePix = await createCodePix(content);
