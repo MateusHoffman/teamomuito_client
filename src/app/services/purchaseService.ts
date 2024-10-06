@@ -22,5 +22,6 @@ export const getPurchaseBySlug = async (slug: string) => {
     method: "GET",
   });
   const result = await response.json();
+  console.log('result: ', result);
   return result || null;
 };
