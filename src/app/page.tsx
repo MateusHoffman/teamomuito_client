@@ -62,7 +62,7 @@ const Home: React.FC = () => {
         photos.length === 0;
       setExample(isEmpty);
 
-      const examplePhotos = [Photo1, Photo2, Photo3, Photo4];
+      const examplePhotos = [Photo1, Photo2, Photo3, Photo4] as any;
 
       if (isEmpty) {
         return {
