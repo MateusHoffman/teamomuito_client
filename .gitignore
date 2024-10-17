@@ -40,7 +40,7 @@ Thumbs.db
 *.war
 
 # Large media files
-*.mp4
+# *.mp4
 *.tiff
 *.avi
 *.flv
