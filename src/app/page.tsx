@@ -245,7 +245,7 @@ Beijinhos`,
       <div className="min-h-screen px-4 py-4 overflow-x-hidden lg:flex lg:justify-center lg:gap-14 lg:px-56 lg:py-7">
         <div className="lg:w-full">
           <form className="flex flex-col h-full gap-3">
-            <h1 className="pb-2 text-6xl font-bold text-left text-white text-[#ff4e6dd9]">
+            <h1 className="pb-2 text-6xl font-bold text-left text-[#ff4e6dd9]">
               Surpreenda Quem Você Ama
             </h1>
             <p className="pb-6 text-base font-bold text-left text-white">
