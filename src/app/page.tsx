@@ -8,13 +8,7 @@ import Photo1 from "@/app/assets/images/photo1.png";
 import Photo2 from "@/app/assets/images/photo2.png";
 import Photo3 from "@/app/assets/images/photo3.png";
 import Photo4 from "@/app/assets/images/photo4.png";
-import { StaticImageData } from "next/image";
-import {
-  generateId,
-  removeAccents,
-  resizeAndConvertImages,
-  validateField,
-} from "./utils/helpers";
+import { generateId, removeAccents, validateField } from "./utils/helpers";
 import "@/app/assets/styles/scrollbar.css";
 import { useRouter } from "next/navigation";
 import { ProductData, useFormContext } from "./context/FormContext";
